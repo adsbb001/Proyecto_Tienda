@@ -6,6 +6,12 @@ import com.tienda.entity.Categoria;
 
 public interface CategoriaService {
 
-	List<Categoria>listar();
-	
+	List<Categoria> listar();
+
+	Categoria buscar(Integer id);
+
+	void guardar(Categoria categoria);
+
+	void eliminar(Integer id);
+
 }
