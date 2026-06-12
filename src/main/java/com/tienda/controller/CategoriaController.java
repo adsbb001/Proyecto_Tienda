@@ -17,7 +17,8 @@ public class CategoriaController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje","Bienvenido al listado de categorias");
 		model.addAttribute("categorias", cService.listar());
 		return "categoria/mantCategoria";
 	}

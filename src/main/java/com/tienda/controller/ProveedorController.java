@@ -21,7 +21,8 @@ public class ProveedorController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Proveedores");
 		model.addAttribute(
 				"proveedores",
 				pService.listar());

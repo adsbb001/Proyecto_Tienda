@@ -23,7 +23,8 @@ public class ProductoController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Productos");
 		model.addAttribute("productos", pService.listar());
 		return "producto/mantProducto";
 	}
