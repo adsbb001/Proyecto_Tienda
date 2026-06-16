@@ -1,11 +1,16 @@
 CREATE DATABASE bd_Tienda;
 
+DROP DATABASE bd_tienda;
+
 USE bd_Tienda;
 
 CREATE TABLE tb_categoria(
 id_categoria INT AUTO_INCREMENT PRIMARY KEY,
-nombre VARCHAR(100) NOT NULL UNIQUE
+nombre VARCHAR(100) NOT NULL UNIQUE,
+estado TINYINT(1) NOT NULL DEFAULT 1
 );
+
+
 
 CREATE TABLE tb_marca(
 id_marca INT AUTO_INCREMENT PRIMARY KEY,
@@ -135,7 +140,7 @@ precio_venta DECIMAL(10,2) NOT NULL,
 subtotal DECIMAL(10,2) NOT NULL,
 
 CONSTRAINT fk_detalle_venta_venta
-FOREIGN KEY(id_venta)
+FOREIGN KEY(id_venta)	
 REFERENCES tb_venta(id_venta),
 
 CONSTRAINT fk_detalle_venta_producto
@@ -144,21 +149,22 @@ REFERENCES tb_producto(id_producto)
 );
 
 -- Insertar registros en tb_categoria
-INSERT INTO tb_categoria (nombre) VALUES
-('Electrodomésticos'),
-('Tecnología'),
-('Ropa'),
-('Calzado'),
-('Alimentos'),
-('Bebidas'),
-('Juguetes'),
-('Muebles'),
-('Belleza'),
-('Deportes');
+INSERT INTO tb_categoria (nombre, estado) VALUES
+('Electrodomésticos', 1),
+('Tecnología', 1),
+('Ropa', 1),
+('Calzado', 1),
+('Alimentos', 1),
+('Bebidas', 1),
+('Juguetes', 0),
+('Muebles', 1),
+('Belleza', 0),
+('Deportes', 1);
 
 
+
+	
 SELECT * FROM tb_categoria;
-
 SELECT * FROM tb_marca;
 
 SELECT * FROM tb_proveedor;

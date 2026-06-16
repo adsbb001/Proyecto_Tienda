@@ -13,6 +13,9 @@ public class Categoria {
 
     @Column(name = "nombre", nullable = false, unique = true, length = 100)
     private String nombre;
+    
+    @Column (name = "estado",nullable = false)
+    private Integer estado;
 
     public Categoria() {
     }
@@ -32,6 +35,13 @@ public class Categoria {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
+	public Integer getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Integer estado) {
+		this.estado = estado;
+	}    
     
 }

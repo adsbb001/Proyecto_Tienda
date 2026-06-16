@@ -16,21 +16,37 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Override
 	public List<Categoria> listar() {
+		
 		return repoCategoria.findAll();
 	}
 
 	@Override
 	public Categoria buscar(Integer id) {
+		
 		return repoCategoria.findById(id).orElse(null);
 	}
 
 	@Override
 	public void guardar(Categoria categoria) {
 		repoCategoria.save(categoria);
+		
 	}
 
 	@Override
 	public void eliminar(Integer id) {
-		repoCategoria.deleteById(id);
+		Categoria categoria=buscar(id);
+		if(categoria!=null) {
+			categoria.setEstado(0);
+			repoCategoria.save(categoria);
+		
 	}
+		}
+
+	@Override
+	public void actualizar(Categoria categoria) {
+		repoCategoria.save(categoria);
+		
+	}
+	
+
 }
