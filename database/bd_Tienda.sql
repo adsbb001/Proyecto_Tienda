@@ -1,7 +1,5 @@
 CREATE DATABASE bd_Tienda;
 
-DROP DATABASE bd_tienda;
-
 USE bd_Tienda;
 
 CREATE TABLE tb_categoria(
@@ -192,6 +190,29 @@ INSERT INTO tb_proveedor (ruc, razon_social, telefono, correo, contacto, estado)
 
 -- Insertar registros en tb_usuario
 INSERT INTO tb_usuario (username,password,id_rol) VALUES ('admin','$2a$10$0MB6.Q4Gv4F93HnNhOSozeW35U44vjCZaCvE/NmEqFZ/IvbAg1Mym',1);
+
+INSERT INTO tb_marca (nombre) VALUES
+('Samsung'),
+('LG'),
+('Sony'),
+('HP'),
+('Lenovo'),
+('Dell'),
+('Asus'),
+('Apple'),
+('Xiaomi'),
+('Philips');
+
+INSERT INTO tb_producto
+(id_categoria,id_marca,codigo,nombre,precio_compra,precio_venta,stock,stock_minimo)
+VALUES
+(2,1,'TEC001','Smart TV 50 Samsung',1200.00,1600.00,15,5),
+(2,3,'TEC002','PlayStation 5 Sony',1800.00,2300.00,8,2),
+(1,2,'ELE001','Refrigeradora LG',1400.00,1900.00,10,3),
+(3,4,'ROP001','Polo Deportivo Nike',35.00,70.00,50,10),
+(4,5,'CAL001','Zapatillas Adidas Run',120.00,180.00,30,5),
+(5,7,'ALI001','Leche Evaporada Gloria',3.20,4.50,200,50),
+(6,8,'BEB001','Coca Cola 1.5L',4.00,6.50,150,30);
 
 
 SELECT id_usuario, username, password, id_rol

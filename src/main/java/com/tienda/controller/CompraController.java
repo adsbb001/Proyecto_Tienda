@@ -20,7 +20,8 @@ public class CompraController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Compras");
 		model.addAttribute("compras", cService.listar());
 		return "compra/mantCompra";
 	}
