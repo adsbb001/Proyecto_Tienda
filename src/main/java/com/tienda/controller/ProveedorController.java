@@ -25,11 +25,14 @@ public class ProveedorController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-		model.addAttribute("mensaje","Bienvenido al módulo de gestión de Proveedores");
-		model.addAttribute("proveedores", pService.listar());
-		
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Proveedores");
+		model.addAttribute(
+				"proveedores",
+				pService.listar());
 		model.addAttribute("proveedor", new Proveedor());
 		return "proveedores/mantProveedor";
+
 	}
 
 	@PostMapping("/registrar")

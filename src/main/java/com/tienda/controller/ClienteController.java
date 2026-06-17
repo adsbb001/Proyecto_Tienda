@@ -22,7 +22,8 @@ public class ClienteController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Clientes");
 		model.addAttribute(
 				"clientes",
 				cService.listar());

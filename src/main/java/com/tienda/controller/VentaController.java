@@ -23,7 +23,8 @@ public class VentaController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Ventas");
 		model.addAttribute("ventas", vService.listar());
 		return "venta/mantVenta";
 	}

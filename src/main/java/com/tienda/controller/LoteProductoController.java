@@ -27,7 +27,8 @@ public class LoteProductoController {
 
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Lotes");
 		model.addAttribute("lote", new LoteProducto());
 		model.addAttribute("productos", pService.listar());
 
