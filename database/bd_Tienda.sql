@@ -1,11 +1,16 @@
 CREATE DATABASE bd_Tienda;
 
+DROP DATABASE bd_tienda;
+
 USE bd_Tienda;
 
 CREATE TABLE tb_categoria(
 id_categoria INT AUTO_INCREMENT PRIMARY KEY,
-nombre VARCHAR(100) NOT NULL UNIQUE
+nombre VARCHAR(100) NOT NULL UNIQUE,
+estado TINYINT(1) NOT NULL DEFAULT 1
 );
+
+
 
 CREATE TABLE tb_marca(
 id_marca INT AUTO_INCREMENT PRIMARY KEY,
@@ -18,7 +23,8 @@ ruc CHAR(11) NOT NULL UNIQUE,
 razon_social VARCHAR(150) NOT NULL,
 telefono VARCHAR(15),
 correo VARCHAR(100),
-contacto VARCHAR(100)
+contacto VARCHAR(100),
+estado TINYINT(1) NOT NULL DEFAULT 1
 );
 
 CREATE TABLE tb_metodo_pago(
@@ -135,7 +141,7 @@ precio_venta DECIMAL(10,2) NOT NULL,
 subtotal DECIMAL(10,2) NOT NULL,
 
 CONSTRAINT fk_detalle_venta_venta
-FOREIGN KEY(id_venta)
+FOREIGN KEY(id_venta)	
 REFERENCES tb_venta(id_venta),
 
 CONSTRAINT fk_detalle_venta_producto
@@ -144,21 +150,31 @@ REFERENCES tb_producto(id_producto)
 );
 
 -- Insertar registros en tb_categoria
-INSERT INTO tb_categoria (nombre) VALUES
-('Electrodomésticos'),
-('Tecnología'),
-('Ropa'),
-('Calzado'),
-('Alimentos'),
-('Bebidas'),
-('Juguetes'),
-('Muebles'),
-('Belleza'),
-('Deportes');
+INSERT INTO tb_categoria (nombre, estado) VALUES
+('Electrodomésticos', 1),
+('Tecnología', 1),
+('Ropa', 1),
+('Calzado', 1),
+('Alimentos', 1),
+('Bebidas', 1),
+('Juguetes', 0),
+('Muebles', 1),
+('Belleza', 0),
+('Deportes', 1);
+
+-- Insertar registros en tb_categoria
+INSERT INTO tb_proveedor (ruc, razon_social, telefono, correo, contacto, estado) VALUES
+('20123456789', 'Distribuidora Andina S.A.', '987654321', 'ventas@andina.com', 'Carlos Pérez', 1),
+('20234567890', 'Importaciones Globales SAC', '912345678', 'contacto@globales.com', 'María López', 1),
+('20345678901', 'Proveedores del Norte EIRL', '956789012', 'info@norte.com', 'Juan Ramírez', 1),
+('20456789012', 'Servicios Comerciales SRL', '934567890', 'servicios@comerciales.com', 'Ana Torres', 0),
+('20567890123', 'Almacenes del Sur SAC', '945678901', 'almacenes@delsur.com', 'Luis Fernández', 1);
 
 
+
+
+	
 SELECT * FROM tb_categoria;
-
 SELECT * FROM tb_marca;
 
 SELECT * FROM tb_proveedor;
