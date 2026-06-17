@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Mantenimiento de Proveedores</title>
+
+	<!-- Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+	<!-- DataTables -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+</head>
+
+<body>
+
+	<div class="container-fluid mt-4">
+
+		<div class="card shadow">
+
+			<div class="card-header bg-primary text-white">
+				<h3 class="mb-0">Mantenimiento de Proveedores</h3>
+			</div>
+
+			<div class="card-body">
+
+				<div class="alert alert-info">
+					<span th:text="${mensaje}"></span>
+				</div>
+
+				<div class="d-flex justify-content-between mb-3">
+
+					<button id="btnNuevo" class="btn btn-success" data-bs-toggle="modal"
+						data-bs-target="#modalProveedor">
+
+						<i class="bi bi-plus-circle"></i>
+						Nuevo Proveedor
+
+					</button>
+
+				</div>
+
+				<div id="mensajeExito" th:if="${MensajeExito}" class="alert alert-success alert-dismissible fade show">
+
+					<span th:text="${MensajeExito}"></span>
+
+					<button type="button" class="btn-close" data-bs-dismiss="alert">
+					</button>
+
+				</div>
+
+				<table id="tablaProveedor" class="table table-bordered table-hover table-striped">
+
+					<thead class="table-dark">
+
+						<tr>
+							<th>ID</th>
+							<th>RUC</th>
+							<th>Razon Social</th>
+							<th>Telefono</th>
+							<th>Correo</th>
+							<th>Contacto</th>
+							<th>Estado</th>
+							<th>Acciones</th>
+						</tr>
+
+					</thead>
+					
+					<tbody>
+					
+						<tr th:each="p : ${proveedores}">
+					
+							<td th:text="${p.idProveedor}"></td>
+							<td th:text="${p.ruc}"></td>
+							<td th:text="${p.razonSocial}"></td>
+							<td th:text="${p.telefono}"></td>
+							<td th:text="${p.correo}"></td>
+							<td th:text="${p.contacto}"></td>
+					
+							<td>
+								<span class="badge" th:classappend="${p.estado==1} ?
+								' bg-success' : ' bg-danger'" th:text="${p.estado == 1 ? 'ACTIVO' : 'INACTIVO'}"></span>
+								</span>
+								
+							</td>
+							<td>
+							
+								<button class="btn btn-warning btn-sm btnEditar" th:data-id="${p.idProveedor}">
+									<i class="bi bi-pencil-square"></i>
+									Editar
+								</button>
+							
+								<button class="btn btn-danger btn-sm btnEliminar" th:data-id="${p.idProveedor}">
+									<i class="bi bi-trash"></i>
+									Eliminar
+								</button>
+							</td>
+							
+							</tr>
+							
+							</tbody>
+							
+							</table>
+							
+							</div>
+							
+							</div>
+							
+							</div>
+							
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+							
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+							
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+							
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+	$('#tablaProveedor').DataTable({
+
+		language : {
+			url : 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json'
+		}
+
+	});
+
+});
+
+$(document).on("click", ".btnEditar", function() {
+
+	let id = $(this).data("id");
+
+	$("#tituloModal").text("Editar Proveedor");
+
+	$("#frmProveedor").attr("action",
+			"/gestionproveedor/actualizar");
+
+	$.get("/gestionproveedor/buscar/" + id,
+	function(data){
+
+		$("#idProveedor").val(data.idProveedor);
+		$("#ruc").val(data.ruc);
+		$("#razonSocial").val(data.razonSocial);
+		$("#telefono").val(data.telefono);
+		$("#correo").val(data.correo);
+		$("#contacto").val(data.contacto);
+		$("#estado").val(data.estado);
+
+		$("#modalProveedor").modal("show");
+
+	});
+
+});
+
+$("#btnNuevo").click(function() {
+
+	$("#tituloModal").text("Registrar Proveedor");
+
+	$("#frmProveedor").attr("action",
+			"/gestionproveedor/registrar");
+
+	$("#idProveedor").val("");
+	$("#ruc").val("");
+	$("#razonSocial").val("");
+	$("#telefono").val("");
+	$("#correo").val("");
+	$("#contacto").val("");
+	$("#estado").val("1");
+
+});
+
+$(document).on("click", ".btnEliminar", function() {
+
+	let id = $(this).data("id");
+
+	if(confirm("¿Desea desactivar este Proveedor?")) {
+
+		window.location =
+			"/gestionproveedor/eliminar/" + id;
+
+	}
+
+});
+
+</script>
+
+<!-- MODAL -->
+
+<div class="modal fade"
+	 id="modalProveedor"
+	 tabindex="-1">
+
+	<div class="modal-dialog modal-lg">
+
+		<div class="modal-content">
+
+			<form id="frmProveedor"
+				  th:action="@{/gestionproveedor/registrar}"
+				  th:object="${proveedor}"
+				  method="post">
+
+				<input type="hidden"
+					   id="idProveedor"
+					   th:field="*{idProveedor}">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title"
+						id="tituloModal">
+
+						Registrar Proveedor
+
+					</h5>
+
+					<button type="button"
+							class="btn-close"
+							data-bs-dismiss="modal">
+					</button>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="row">
+
+						<div class="col-md-6 mb-3">
+							<label>RUC</label>
+							<input id="ruc"
+								   type="text"
+								   maxlength="11"
+								   class="form-control"
+								   th:field="*{ruc}">
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label>Razon Social</label>
+							<input id="razonSocial"
+								   type="text"
+								   class="form-control"
+								   th:field="*{razonSocial}">
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label>Telefono</label>
+							<input id="telefono"
+								   type="text"
+								   class="form-control"
+								   th:field="*{telefono}">
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label>Correo</label>
+							<input id="correo"
+								   type="email"
+								   class="form-control"
+								   th:field="*{correo}">
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label>Contacto</label>
+							<input id="contacto"
+								   type="text"
+								   class="form-control"
+								   th:field="*{contacto}">
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label>Estado</label>
+
+							<select id="estado"
+									class="form-select"
+									th:field="*{estado}">
+
+								<option value="1">ACTIVO</option>
+								<option value="0">INACTIVO</option>
+
+							</select>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="button"
+							class="btn btn-secondary"
+							data-bs-dismiss="modal">
+						Cerrar
+					</button>
+
+					<button type="submit"
+							class="btn btn-primary">
+						Guardar
+					</button>
+
+				</div>
+
+			</form>
+
+		</div>
+
+	</div>
+
+</div>
+
+<script>
+setTimeout(function() {
+
+	let mensaje =
+		document.getElementById("mensajeExito");
+
+	if(mensaje){
+
+		let alerta =
+			new bootstrap.Alert(mensaje);
+
+		alerta.close();
+
+	}
+
+}, 3000);
+</script>
+
+</body>
+</html>
