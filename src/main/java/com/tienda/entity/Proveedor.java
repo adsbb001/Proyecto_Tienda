@@ -79,7 +79,7 @@ public class Proveedor {
 	public void setContacto(String contacto) {
 		this.contacto = contacto;
 	}
-
+	
 	public Integer getEstado() {
 		return estado;
 	}
@@ -88,5 +88,5 @@ public class Proveedor {
 		this.estado = estado;
 	}
 
-    
+   
 }

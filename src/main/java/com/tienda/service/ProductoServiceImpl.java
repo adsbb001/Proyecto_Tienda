@@ -50,4 +50,10 @@ implements ProductoService {
 					.equals(idProducto))
 				.toList();
 	}
+
+	@Override
+	public List<Producto> buscarPorFiltros(int categoria, int marca, int filtroStock) {
+		return repoProducto.buscarPorFiltros(categoria, marca, filtroStock);
+	}
+
 }

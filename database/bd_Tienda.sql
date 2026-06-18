@@ -242,4 +242,21 @@ SELECT * FROM tb_venta;
 
 SELECT * FROM tb_detalle_venta;
 
-	
+-- =================================================================
+-- PRODUCTOS SIMPLES (Copia, pega y ejecuta)
+-- =================================================================
+INSERT INTO tb_producto (id_categoria, id_marca, codigo, nombre, precio_compra, precio_venta, stock, stock_minimo) VALUES
+(2, 4, 'TEC-201', 'Laptop HP Simple', 2000.00, 2500.00, 2, 5),       -- Alerta Stock Mínimo
+(2, 5, 'TEC-202', 'Tablet Lenovo Simple', 500.00, 700.00, 1, 4),     -- Alerta Stock Mínimo
+(5, 7, 'ALI-201', 'Yogurt Gloria Grande', 5.00, 8.00, 50, 10),       -- Stock Normal
+(6, 8, 'BEB-201', 'Gaseosa Coca Cola 2L', 4.00, 6.00, 100, 20);      -- Stock Normal
+
+
+-- =================================================================
+-- LOTES SIMPLES (Usa IDs fijos directos: 1, 2, 3...)
+-- =================================================================
+INSERT INTO tb_lote_producto (id_producto, numero_lote, fecha_ingreso, fecha_vencimiento, cantidad) VALUES
+(6, 'LOTE-A', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 5 DAY), 50),   -- ¡YA VENCIDO! (Hace 5 días)
+(6, 'LOTE-B', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 10 DAY), 40),  -- ¡PRÓXIMO A VENCER! (En 10 días)
+(7, 'LOTE-C', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 2 DAY), 30),   -- ¡YA VENCIDO! (Hace 2 días)
+(7, 'LOTE-D', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY), 60);  -- ¡PRÓXIMO A VENCER! (En 15 días)	

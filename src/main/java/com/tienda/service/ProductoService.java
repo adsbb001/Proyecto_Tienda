@@ -16,4 +16,6 @@ public interface ProductoService {
 	void eliminar(Integer id);
 
 	List<LoteProducto> listarLotes(Integer idProducto);
+	
+	List<Producto> buscarPorFiltros(int categoria, int marca, int filtroStock);
 }
