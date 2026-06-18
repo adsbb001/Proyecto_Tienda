@@ -13,4 +13,6 @@ public interface LoteProductoService {
 	void guardar(LoteProducto lote);
 
 	void eliminar(Integer id);
+	
+	List<LoteProducto> buscarLotesAvanzados(int categoria, int marca, int filtroVencimiento);
 }
