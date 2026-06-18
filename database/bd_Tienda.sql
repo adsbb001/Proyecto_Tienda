@@ -1,5 +1,5 @@
 CREATE DATABASE bd_Tienda;
-
+DROP DATABASE bd_Tienda;
 USE bd_Tienda;
 
 CREATE TABLE tb_categoria(
@@ -147,6 +147,26 @@ FOREIGN KEY(id_producto)
 REFERENCES tb_producto(id_producto)
 );
 
+CREATE TABLE tb_rol(
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+INSERT INTO tb_rol(nombre)
+VALUES ('ADMIN'),
+       ('VENDEDOR');
+
+CREATE TABLE tb_usuario(
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    id_rol INT NOT NULL,
+
+    CONSTRAINT fk_usuario_rol
+    FOREIGN KEY(id_rol)
+    REFERENCES tb_rol(id_rol)
+);
+
 -- Insertar registros en tb_categoria
 INSERT INTO tb_categoria (nombre, estado) VALUES
 ('Electrodomésticos', 1),
@@ -168,6 +188,9 @@ INSERT INTO tb_proveedor (ruc, razon_social, telefono, correo, contacto, estado)
 ('20456789012', 'Servicios Comerciales SRL', '934567890', 'servicios@comerciales.com', 'Ana Torres', 0),
 ('20567890123', 'Almacenes del Sur SAC', '945678901', 'almacenes@delsur.com', 'Luis Fernández', 1);
 
+-- Insertar registros en tb_usuario
+INSERT INTO tb_usuario (username,password,id_rol) VALUES ('admin','$2a$10$0MB6.Q4Gv4F93HnNhOSozeW35U44vjCZaCvE/NmEqFZ/IvbAg1Mym',1);
+INSERT INTO tb_usuario (username,password,id_rol) VALUES ('vendedor1','$2a$10$QjfJP.TExLGvDGsOouxfpOnSVgypCo2LAt0qiDiDq/YnJsjfuENv6',2);
 
 INSERT INTO tb_marca (nombre) VALUES
 ('Samsung'),
@@ -193,8 +216,11 @@ VALUES
 (6,8,'BEB001','Coca Cola 1.5L',4.00,6.50,150,30);
 
 
+SELECT id_usuario, username, password, id_rol
+FROM tb_usuario;
 
-	
+SELECT * FROM tb_usuario;
+SELECT * FROM tb_rol;
 SELECT * FROM tb_categoria;
 SELECT * FROM tb_marca;
 
@@ -215,3 +241,5 @@ SELECT * FROM tb_detalle_compra;
 SELECT * FROM tb_venta;
 
 SELECT * FROM tb_detalle_venta;
+
+	
