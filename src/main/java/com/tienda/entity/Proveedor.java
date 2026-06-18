@@ -25,6 +25,9 @@ public class Proveedor {
 
     @Column(name = "contacto", length = 100)
     private String contacto;
+    
+    @Column (name = "estado",nullable = false)
+    private Integer estado;
 
     public Proveedor() {
     }
@@ -76,5 +79,14 @@ public class Proveedor {
 	public void setContacto(String contacto) {
 		this.contacto = contacto;
 	}
+	
+	public Integer getEstado() {
+		return estado;
+	}
 
+	public void setEstado(Integer estado) {
+		this.estado = estado;
+	}
+
+   
 }

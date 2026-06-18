@@ -21,7 +21,8 @@ public class MetodoPagoController {
 
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Métodos de Pago");
 		model.addAttribute(
 				"metodosPago",
 				mpService.listar());

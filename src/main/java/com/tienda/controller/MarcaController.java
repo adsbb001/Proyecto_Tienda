@@ -19,10 +19,11 @@ public class MarcaController {
 
 	@Autowired
 	private MarcaService mService;
-
+  
 	@GetMapping("/lista")
 	public String listar(Model model) {
-
+        
+		model.addAttribute("mensaje", "Bienvenido al módulo de Marcas");
 		model.addAttribute(
 				"marcas",
 				mService.listar());

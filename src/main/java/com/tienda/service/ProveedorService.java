@@ -12,4 +12,5 @@ public interface ProveedorService {
 	void guardar(Proveedor proveedor);
 
 	void eliminar(Integer id);
+	void actualizar(Proveedor proveedor);
 }

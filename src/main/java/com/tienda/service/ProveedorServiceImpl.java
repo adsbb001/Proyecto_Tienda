@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.tienda.entity.Proveedor;
 import com.tienda.repository.ProveedorRepository;
 
@@ -31,6 +32,17 @@ public class ProveedorServiceImpl implements ProveedorService {
 
 	@Override
 	public void eliminar(Integer id) {
-		repoProveedor.deleteById(id);
+		Proveedor proveedor=buscar(id);
+		if(proveedor!=null) {
+			proveedor.setEstado(0);
+			repoProveedor.save(proveedor);
+		
+	}
+	}
+	
+	@Override
+	public void actualizar(Proveedor proveedor) {
+		repoProveedor.save(proveedor);
+		
 	}
 }
