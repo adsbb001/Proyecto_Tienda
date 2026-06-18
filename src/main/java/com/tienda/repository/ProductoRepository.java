@@ -11,18 +11,18 @@ import com.tienda.entity.Producto;
 public interface ProductoRepository extends JpaRepository<Producto,Integer> {
 		
 @Query("""
-         SELECT p FROM Producto p
-         WHERE (:categoria = 0 OR p.categoria.idCategoria = :categoria)
-           AND (:marca = 0 OR p.marca.idMarca = :marca)
-           AND (:filtroStock = 0 
-                OR (:filtroStock = 1 AND p.stock > 0)
-                OR (:filtroStock = 2 AND p.stock <= p.stockMinimo))
-       """)	
- List<Producto> buscarPorFiltros(
-         @Param("categoria") int categoria,
-         @Param("marca") int marca,
-         @Param("filtroStock") int filtroStock
-         );
+	     SELECT p FROM Producto p
+	     WHERE (:categoria = 0 OR p.categoria.idCategoria = :categoria)
+	       AND (:marca = 0 OR p.marca.idMarca = :marca)
+	       AND (:filtroStock = 0 
+	            OR (:filtroStock = 1 AND p.stock > p.stockMinimo)
+	            OR (:filtroStock = 2 AND p.stock <= p.stockMinimo))
+	       """)	
+List<Producto> buscarPorFiltros(
+	    @Param("categoria") int categoria,
+	    @Param("marca") int marca,
+	    @Param("filtroStock") int filtroStock
+	    );
 }
 	
 
