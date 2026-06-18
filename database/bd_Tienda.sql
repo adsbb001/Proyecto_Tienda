@@ -1,5 +1,5 @@
 CREATE DATABASE bd_Tienda;
-
+DROP DATABASE bd_Tienda;
 USE bd_Tienda;
 
 CREATE TABLE tb_categoria(
@@ -190,6 +190,7 @@ INSERT INTO tb_proveedor (ruc, razon_social, telefono, correo, contacto, estado)
 
 -- Insertar registros en tb_usuario
 INSERT INTO tb_usuario (username,password,id_rol) VALUES ('admin','$2a$10$0MB6.Q4Gv4F93HnNhOSozeW35U44vjCZaCvE/NmEqFZ/IvbAg1Mym',1);
+INSERT INTO tb_usuario (username,password,id_rol) VALUES ('vendedor1','$2a$10$QjfJP.TExLGvDGsOouxfpOnSVgypCo2LAt0qiDiDq/YnJsjfuENv6',2);
 
 INSERT INTO tb_marca (nombre) VALUES
 ('Samsung'),
@@ -240,3 +241,5 @@ SELECT * FROM tb_detalle_compra;
 SELECT * FROM tb_venta;
 
 SELECT * FROM tb_detalle_venta;
+
+	
