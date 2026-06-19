@@ -15,19 +15,21 @@ public interface ProductoRepository extends JpaRepository<Producto,Integer> {
 	
 	@Query("SELECT p FROM Producto p " +
 	           "WHERE p.stock <= p.stockMinimo " +
+	           "AND p.categoria.estado = 1 " +
 	           "ORDER BY p.stock ASC")
 	    List<Producto> encontrarProductosStockBajo();
-	
-	
-	@Query("SELECT p FROM Producto p " +
+
+	    @Query("SELECT p FROM Producto p " +
 	           "WHERE p.stock <= p.stockMinimo " +
+	           "AND p.categoria.estado = 1 " +
 	           "AND p.categoria.idCategoria = :idCategoria " +
 	           "ORDER BY p.stock ASC")
 	    List<Producto> encontrarStockBajoPorCategoria(@Param("idCategoria") Integer idCategoria);
-	
-	
-	@Query("SELECT COUNT(p) FROM Producto p WHERE p.stock <= p.stockMinimo")
-    long contarProductosStockBajo();
+
+	    @Query("SELECT COUNT(p) FROM Producto p " +
+	           "WHERE p.stock <= p.stockMinimo " +
+	           "AND p.categoria.estado = 1")
+	    long contarProductosStockBajo();
 
 @Query("""
          SELECT p FROM Producto p

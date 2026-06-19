@@ -62,7 +62,10 @@ implements ProductoService {
 	@Override
 	@Transactional (readOnly = true)
 	public List<Producto> listarStockBajoPorCategoria(Integer idCategoria) {
-		return repoProducto.encontrarProductosStockBajo();
+		if (idCategoria == null) {
+	        return repoProducto.encontrarProductosStockBajo();
+	    }
+	    return repoProducto.encontrarStockBajoPorCategoria(idCategoria);
 	}
 
 	@Override

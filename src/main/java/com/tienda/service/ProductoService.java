@@ -19,7 +19,7 @@ public interface ProductoService {
 	
 
 	
-	
+		
 List<Producto> listarProductosStockBajo();
     
     List<Producto> listarStockBajoPorCategoria(Integer idCategoria);

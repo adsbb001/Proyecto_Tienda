@@ -14,7 +14,7 @@ import com.tienda.service.CategoriaService;
 import com.tienda.service.ProductoService;
 
 @Controller
-@RequestMapping("/reportesinventario")
+@RequestMapping("/gestionreporte")
 public class ReporteInventarioController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class ReporteInventarioController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping("/stock-bajo")
+    @GetMapping("/lista")
     public String stockBajo(
             @RequestParam(value = "idCategoria", required = false) Integer idCategoria,
             Model model) {
@@ -33,7 +33,7 @@ public class ReporteInventarioController {
 
         // 2. Pasar datos a la vista
         model.addAttribute("productos", productos);
-        model.addAttribute("categorias", categoriaService.listar());
+        model.addAttribute("categorias", categoriaService.listarActivas());
         model.addAttribute("idCategoriaSeleccionada", idCategoria);
         model.addAttribute("totalProductos", productos.size());
 
