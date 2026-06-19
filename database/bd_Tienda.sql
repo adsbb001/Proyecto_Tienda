@@ -268,3 +268,13 @@ INSERT INTO tb_lote_producto (id_producto, numero_lote, fecha_ingreso, fecha_ven
 (1, 'LOTE-B', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 10 DAY), 40),
 (2, 'LOTE-C', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 2 DAY), 30),
 (2, 'LOTE-D', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY), 60);
+
+-- Productos con stock bajo en Perú
+INSERT INTO tb_producto (id_categoria, id_marca, codigo, nombre, precio_compra, precio_venta, stock, stock_minimo)
+VALUES
+(1, 1, 'ABR001', 'Arroz Costeño 5kg', 18.50, 22.00, 3, 10),
+(2, 2, 'BEB003', 'Inca Kola 1.5L', 4.20, 6.00, 5, 15),
+(3, 3, 'LAC003', 'Leche Gloria Entera 1L', 3.00, 4.50, 2, 12),
+(4, 4, 'SNK004', 'Chifles Laive 150g', 2.50, 3.80, 4, 10),
+(5, 5, 'LIM005', 'Detergente Bolívar 1kg', 6.50, 8.50, 6, 20);
+
