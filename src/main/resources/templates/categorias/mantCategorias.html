@@ -1,329 +1,258 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Mantenimiento de 	Categorías</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento de Categorías</title>
 
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet">
-	  <link rel="stylesheet"
-	  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Fuentes -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/index.css">
 
-<!-- DataTables -->
-<link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css"
-      rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" th:href="@{/css/categorias.css}">
 </head>
 <body>
 
-<div class="container mt-4">
+    <!-- HEADER -->
+    <header class="crud-header">
+        <div class="container crud-header-content">
+            <div class="crud-header-left">
+                <div class="crud-header-icon">
+                    <i class="bi bi-tags-fill"></i>
+                </div>
+                <div>
+                    <h1>Categorías</h1>
+                    <p>Mantenimiento y gestión de categorías</p>
+                </div>
+            </div>
+            <a th:href="@{/home}" class="btn-volver">
+                <i class="bi bi-arrow-left"></i>
+                Volver al inicio
+            </a>
+        </div>
+    </header>
 
-    <div class="card shadow">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container">
+        <div class="crud-card">
 
-		<div class="card-header bg-primary text-white">
-		<h3 class="mb-0">Mantenimiento de Categorias</h3>
-		</div>
+            <!-- Encabezado de la card -->
+            <div class="crud-card-header">
+                <h3>
+                    <i class="bi bi-list-ul"></i>
+                    Listado de Categorías
+                </h3>
+                <button id="btnNuevo"
+                        class="btn-nuevo"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalCategoria">
+                    <i class="bi bi-plus-circle"></i>
+                    Nueva Categoría
+                </button>
+            </div>
 
-		<div class="card-body">
-			<div class="alert alert-info">
-			<span th:text="${mensaje}"></span>
-			</div>
-		
-			<button id="btnNuevo"
-			        class="btn btn-success"
-			        data-bs-toggle="modal"
-			        data-bs-target="#modalCategoria">
+            <!-- Alertas -->
+            <div class="crud-card-body">
 
-			    <i class="bi bi-plus-circle"></i>
-			    Nueva Categoría
-			</button>
+                <!-- Alerta de mensaje general -->
+                <div th:if="${mensaje}" class="alert-mensaje">
+                    <i class="bi bi-info-circle-fill"></i>
+                    <span th:text="${mensaje}"></span>
+                </div>
+
+                <!-- Alerta de éxito -->
+                <div th:if="${MensajeExito}" id="msg" class="alert-exito">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="${MensajeExito}"></span>
+                </div>
+
+                <!-- Tabla -->
+                <div class="table-responsive">
+                    <table id="tablaCategorias" class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th width="200">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="c : ${categorias}">
+                                <td th:text="${c.idCategoria}"></td>
+                                <td><strong th:text="${c.nombre}"></strong></td>
+                                <td>
+                                    <span class="badge-estado"
+                                          th:classappend="${c.estado == 1} ? 'badge-activo' : 'badge-inactivo'"
+                                          th:text="${c.estado == 1 ? 'ACTIVO' : 'INACTIVO'}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn-editar btn-sm"
+                                            th:data-id="${c.idCategoria}">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Editar
+                                    </button>
+                                    <button class="btn-eliminar btn-sm"
+                                            th:data-id="${c.idCategoria}">
+                                        <i class="bi bi-trash"></i>
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
+    </main>
 
-		<div class="card-body">
-		<div id="msg"
-		     th:if="${MensajeExito}"
-		     class="alert alert-success alert-dismissible fade show">
+    <!-- MODAL CATEGORÍA -->
+    <div class="modal fade" id="modalCategoria" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
 
-		    <span th:text="${MensajeExito}"></span>
+                <form id="formCategoria"
+                      th:action="@{/gestioncategoria/registrar}"
+                      th:object="${categoria}"
+                      method="post">
 
-		    <button type="button"
-		            class="btn-close"
-		            data-bs-dismiss="alert">
-		    </button>
+                    <input type="hidden" id="idCategoria" th:field="*{idCategoria}">
 
-		</div>
-		
-		
-		
-        <div class="card-body">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tituloModal">
+                            <i class="bi bi-plus-circle"></i>
+                            Registrar Categoría
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
-            <table id="tablaCategorias"
-                   class="table table-bordered table-hover table-striped">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text"
+                                   id="nombre"
+                                   class="form-control"
+                                   th:field="*{nombre}"
+                                   placeholder="Ingrese el nombre de la categoría"
+                                   required>
+                        </div>
 
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-						<th>Estado</th>
-                        <th width="180">Acciones</th>
-                    </tr>
-                </thead>
+                        <div class="mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select id="estado"
+                                    class="form-select"
+                                    th:field="*{estado}">
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <tbody>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i>
+                            Guardar
+                        </button>
+                    </div>
 
-                    <tr th:each="c : ${categorias}">
+                </form>
 
-                        <td th:text="${c.idCategoria}"></td>
-
-                        <td th:text="${c.nombre}"></td>
-						<td>
-						    <span class="badge"
-						          th:classappend="${c.estado == 1} ?
-						                          ' bg-success' :
-						                          ' bg-danger'">
-
-						        <span th:text="${c.estado == 1 ? 'ACTIVO' : 'INACTIVO'}"></span>
-
-						    </span>
-						</td>
-                        <td>
-
-							<button class="btn btn-warning btn-sm btn-editar"
-							        th:data-id="${c.idCategoria}">
-							    <i class="bi bi-pencil-square"></i>
-								Editar
-							</button>
-
-							<button class="btn btn-danger btn-sm btnEliminar"
-							        th:data-id="${c.idCategoria}">
-							    <i class="bi bi-trash"></i>
-								Eliminar
-							</button>
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
+            </div>
         </div>
-
     </div>
 
-</div>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<!-- JQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
 
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script th:inline="javascript">
+        // Variable para el context path (funciona aunque cambies la ruta de la app)
+        var ctx = /*[[@{/}]]*/ '/';
 
-<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+        $(document).ready(function() {
 
-<script>
-$(document).ready(function() {
+            // Inicializar DataTable
+            $('#tablaCategorias').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 registros",
+                    zeroRecords: "No se encontraron resultados",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    }
+                }
+            });
 
-    $('#tablaCategorias').DataTable({
+            // Botón Nuevo
+            $("#btnNuevo").click(function(){
+                $("#idCategoria").val("");
+                $("#nombre").val("");
+                $("#estado").val("1");
+                $("#formCategoria").attr("action", ctx + "gestioncategoria/registrar");
+                $("#tituloModal").html('<i class="bi bi-plus-circle"></i> Registrar Categoría');
+            });
 
-        language: {
-			
-			url: "//cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json",	
+            // Botón Editar
+            $(document).on("click", ".btn-editar", function(){
+                let id = $(this).data("id");
 
-            search: "Buscar:",
+                $.get(ctx + "gestioncategoria/buscar/" + id, function(data){
+                    $("#idCategoria").val(data.idCategoria);
+                    $("#nombre").val(data.nombre);
+                    $("#estado").val(data.estado);
+                    $("#formCategoria").attr("action", ctx + "gestioncategoria/actualizar");
+                    $("#tituloModal").html('<i class="bi bi-pencil-square"></i> Editar Categoría');
 
-            lengthMenu: "Mostrar _MENU_ registros",
+                    let modal = new bootstrap.Modal(document.getElementById("modalCategoria"));
+                    modal.show();
+                });
+            });
 
-            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            // Botón Eliminar
+            $(document).on("click", ".btn-eliminar", function() {
+                let id = $(this).data("id");
 
-            infoEmpty: "Mostrando 0 registros",
+                if(confirm("¿Desea desactivar esta categoría?")) {
+                    window.location = ctx + "gestioncategoria/desactivar/" + id;
+                }
+            });
+        });
+    </script>
 
-            zeroRecords: "No se encontraron resultados",
-
-            paginate: {
-                first: "Primero",
-                last: "Último",
-                next: "Siguiente",
-                previous: "Anterior"
+    <!-- Auto-cerrar alerta de éxito -->
+    <script>
+        setTimeout(function() {
+            let mensaje = document.getElementById("msg");
+            if(mensaje){
+                let alerta = new bootstrap.Alert(mensaje);
+                alerta.close();
             }
-
-        }
-
-    });
-
-});
-</script>
-
-
-
-
-<!-- MODAL CATEGORÍA -->
-<div class="modal fade" id="modalCategoria" tabindex="-1">
-
-    <div class="modal-dialog">	
-
-        <div class="modal-content">
-
-			<form id="formCategoria"
-			      th:action="@{/gestioncategoria/registrar}"
-			      th:object="${categoria}"
-			      method="post">
-				  
-				  <input type="hidden" id="idCategoria" th:field="*{idCategoria}">	
-				  
-                <div class="modal-header">
-					
-					<h5 class="modal-title" id="tituloModal">
-					    Registrar Categoría
-					</h5>
-
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal">
-                    </button>
-                </div>
-
-                <div class="modal-body">
-
-                    <!-- ID oculto (para editar también sirve) -->
-					
-
-                    <!-- Nombre -->
-                    <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-
-						<input type="text"
-						       id="nombre"
-						       class="form-control"
-						       th:field="*{nombre}"
-						       required>
-                    </div>
-
-                    <!-- Estado -->
-                    <div class="mb-3">
-                        <label class="form-label">Estado</label>
-
-						<select id="estado"
-						        class="form-select"
-						        th:field="*{estado}">
-								
-                            <option value="1">Activo</option>
-		  <!--Activar o desactivar si es necesario agregar una categoria inactiva -->
-                            <option value="0">Inactivo</option> 
-
-                        </select>
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Cerrar
-                    </button>
-
-                    <button type="submit"
-                            class="btn btn-primary">
-                        Guardar
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-
-$(document).ready(function(){
-
-	$("#btnNuevo").click(function(){
-
-	    $("#idCategoria").val("");
-	    $("#nombre").val("");
-	    $("#estado").val("1");
-
-	    $("#formCategoria").attr(
-	        "action",
-	        "/gestioncategoria/registrar"
-	    );
-
-	    $("#tituloModal").text("Registrar Categoría");
-
-	});
-
-	$(document).on("click", ".btn-editar", function(){
-
-	    let id = $(this).data("id");
-
-	    $.get("/gestioncategoria/buscar/" + id, function(data){
-
-	        $("#idCategoria").val(data.idCategoria);
-	        $("#nombre").val(data.nombre);
-	        $("#estado").val(data.estado);
-
-	        $("#formCategoria").attr(
-	            "action",
-	            "/gestioncategoria/actualizar"
-	        );
-
-	        $("#tituloModal").text("Editar Categoría");
-
-	        let modal = new bootstrap.Modal(
-	            document.getElementById("modalCategoria")
-	        );
-
-	        modal.show();
-
-	    });
-
-	});
-	
-	
-	$(document).on("click", ".btnEliminar", function() {
-
-	    let id = $(this).data("id");
-
-	    if(confirm("¿Desea desactivar esta categoría?")) {
-
-	        window.location =
-	            "/gestioncategoria/desactivar/" + id;
-
-	    }
-
-	});
-	
-
-});
-
-
-</script>
-
-
-
-<!--SCRIPT TIEMPO DE MENSAJE-->
-<script>
-setTimeout(function() {
-	let mensaje = document.getElementById("msg");
-	if(mensaje){
-		let alerta =new bootstrap.Alert(mensaje);
-	alerta.close();
-	}
-}, 3000);
-</script>
-
+        }, 3000);
+    </script>
 
 </body>
 </html>
