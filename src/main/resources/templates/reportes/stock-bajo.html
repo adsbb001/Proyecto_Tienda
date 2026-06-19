@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Stock Bajo</title>
+    <!-- Bootstrap 5 para que se vea bonito -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .badge-critico { background-color: #dc3545; color: white; }
+        .badge-alerta  { background-color: #ffc107; color: black; }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">⚠️ Reporte de Productos con Stock Bajo</h2>
+    <p class="text-muted">Productos cuyo stock actual es menor o igual a su stock mínimo.</p>
+
+    <!-- FILTROS -->
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+            <form th:action="@{/reportes/inventario/stock-bajo}" method="get" class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">Filtrar por Categoría:</label>
+                    <select name="idCategoria" class="form-select">
+                        <option value="">-- Todas las categorías --</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.idCategoria}"
+                                th:text="${cat.nombre}"
+                                th:selected="${cat.idCategoria == idCategoriaSeleccionada}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">🔍 Filtrar</button>
+                </div>
+                <div class="col-md-3">
+                    <a th:href="@{/reportes/inventario/stock-bajo}" class="btn btn-secondary w-100">🔄 Limpiar Filtro</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RESUMEN Y BOTON IMPRIMIR -->
+    <div class="alert alert-danger d-flex justify-content-between align-items-center shadow-sm">
+        <span>
+            <strong>⚠️ Atención:</strong> Se encontraron 
+            <span class="badge bg-danger fs-6" th:text="${totalProductos}">0</span> 
+            productos que necesitan reposición.
+        </span>
+        <button onclick="window.print()" class="btn btn-outline-danger btn-sm">🖨️ Imprimir Reporte</button>
+    </div>
+
+    <!-- TABLA DE RESULTADOS -->
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered mb-0 align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Stock Actual</th>
+                        <th>Stock Mínimo</th>
+                        <th>Faltante</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p, stat : ${productos}"
+                        th:classappend="${p.stock == 0} ? 'table-danger' : 'table-warning'">
+                        <td class="text-center" th:text="${stat.index + 1}">1</td>
+                        <td th:text="${p.codigo}">TEC001</td>
+                        <td th:text="${p.nombre}">Smart TV</td>
+                        <td th:text="${p.categoria.nombre}">Tecnología</td>
+                        <td th:text="${p.marca.nombre}">Samsung</td>
+                        <td class="text-center fw-bold" th:text="${p.stock}">0</td>
+                        <td class="text-center" th:text="${p.stockMinimo}">5</td>
+                        <td class="text-center text-danger fw-bold" th:text="${p.stockMinimo - p.stock}">5</td>
+                        <td class="text-center">
+                            <span th:if="${p.stock == 0}" class="badge badge-critico">
+                                SIN STOCK
+                            </span>
+                            <span th:unless="${p.stock == 0}" class="badge badge-alerta">
+                                STOCK BAJO
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <!-- Mensaje si no hay resultados -->
+                    <tr th:if="${#lists.isEmpty(productos)}">
+                        <td colspan="9" class="text-center text-success py-4 fs-5">
+                            ✅ ¡Excelente! No hay productos con stock bajo.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/}" class="btn btn-secondary">← Volver al Menú Principal</a>
+    </div>
+</div>
+
+</body>
+</html>

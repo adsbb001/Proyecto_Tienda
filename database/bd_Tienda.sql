@@ -242,4 +242,6 @@ SELECT * FROM tb_venta;
 
 SELECT * FROM tb_detalle_venta;
 
+UPDATE tb_producto SET stock = 2 WHERE codigo = 'TEC001'; -- Le bajamos el stock al Smart TV
+UPDATE tb_producto SET stock = 0 WHERE codigo = 'ALI001'; -- Dejamos sin stock la Leche
 	

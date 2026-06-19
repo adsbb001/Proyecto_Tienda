@@ -16,4 +16,13 @@ public interface ProductoService {
 	void eliminar(Integer id);
 
 	List<LoteProducto> listarLotes(Integer idProducto);
+	
+	
+	
+List<Producto> listarProductosStockBajo();
+    
+    List<Producto> listarStockBajoPorCategoria(Integer idCategoria);
+    
+    long contarProductosStockBajo();
+	
 }

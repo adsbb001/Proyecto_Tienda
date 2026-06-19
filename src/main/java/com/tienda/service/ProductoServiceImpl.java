@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tienda.entity.LoteProducto;
 import com.tienda.entity.Producto;
@@ -49,5 +50,23 @@ implements ProductoService {
 					l.getProducto().getIdProducto()
 					.equals(idProducto))
 				.toList();
+	}
+
+	@Override
+	@Transactional (readOnly = true)
+	public List<Producto> listarProductosStockBajo() {
+		return repoProducto.encontrarProductosStockBajo();
+	}
+
+	@Override
+	@Transactional (readOnly = true)
+	public List<Producto> listarStockBajoPorCategoria(Integer idCategoria) {
+		return repoProducto.encontrarProductosStockBajo();
+	}
+
+	@Override
+	@Transactional (readOnly = true)
+	public long contarProductosStockBajo() {
+		return repoProducto.contarProductosStockBajo();
 	}
 }
