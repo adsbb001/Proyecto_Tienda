@@ -42,7 +42,6 @@ public class Categoria {
 
 	public void setEstado(Integer estado) {
 		this.estado = estado;
-	}
-    
+	}    
     
 }

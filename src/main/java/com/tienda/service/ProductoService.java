@@ -17,6 +17,7 @@ public interface ProductoService {
 
 	List<LoteProducto> listarLotes(Integer idProducto);
 	
+
 	
 	
 List<Producto> listarProductosStockBajo();
@@ -25,4 +26,7 @@ List<Producto> listarProductosStockBajo();
     
     long contarProductosStockBajo();
 	
+
+	List<Producto> buscarPorFiltros(int categoria, int marca, int filtroStock);
+
 }

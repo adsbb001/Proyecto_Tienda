@@ -1,5 +1,6 @@
 package com.tienda.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,12 @@ implements LoteProductoService {
 	public void eliminar(Integer id) {
 		repoLote.deleteById(id);
 	}
+
+	@Override
+	public List<LoteProducto> buscarLotesAvanzados(int categoria, int marca, int filtroVencimiento) {
+		LocalDate fechaHoy = LocalDate.now();
+        LocalDate fechaLimite = fechaHoy.plusDays(30);
+        return repoLote.buscarLotesAvanzados(categoria, marca, filtroVencimiento, fechaHoy, fechaLimite);
+    }
+
 }

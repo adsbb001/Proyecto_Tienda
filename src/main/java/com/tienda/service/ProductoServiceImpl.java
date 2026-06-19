@@ -53,6 +53,7 @@ implements ProductoService {
 	}
 
 	@Override
+
 	@Transactional (readOnly = true)
 	public List<Producto> listarProductosStockBajo() {
 		return repoProducto.encontrarProductosStockBajo();
@@ -69,4 +70,10 @@ implements ProductoService {
 	public long contarProductosStockBajo() {
 		return repoProducto.contarProductosStockBajo();
 	}
+
+	public List<Producto> buscarPorFiltros(int categoria, int marca, int filtroStock) {
+		return repoProducto.buscarPorFiltros(categoria, marca, filtroStock);
+	}
+
+
 }
