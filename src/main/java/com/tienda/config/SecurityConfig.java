@@ -23,6 +23,8 @@ public class SecurityConfig {
 	SecurityFilterChain	 filterChain(HttpSecurity http) throws Exception{
 		
 		http.authorizeHttpRequests(auth -> auth
+				// Permitir acceso público a recursos estáticos
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
 				.requestMatchers("/login")
 				.permitAll()
 				
@@ -40,6 +42,9 @@ public class SecurityConfig {
 				
 				.requestMatchers("/gestionproducto/**")
 				.hasRole("ADMIN")
+				
+				.requestMatchers("/gestionconsulta/**")
+				.hasAnyRole("ADMIN", "VENDEDOR")
 				
 				.anyRequest()
 				.authenticated()
