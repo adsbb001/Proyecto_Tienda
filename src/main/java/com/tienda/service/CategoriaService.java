@@ -16,4 +16,5 @@ public interface CategoriaService {
 
 	void eliminar(Integer id);
 
+	List<Categoria> listarActivas();
 }

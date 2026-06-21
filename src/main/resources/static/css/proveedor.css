@@ -1,0 +1,485 @@
+/* ========================================
+   VARIABLES Y ESTILOS BASE
+   ======================================== */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    --card-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --border-radius: 16px;
+}
+
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+/* ========================================
+   HEADER DEL CRUD
+   ======================================== */
+.crud-header {
+    background: var(--primary-gradient);
+    padding: 2rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: -2rem;
+}
+
+.crud-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+}
+
+.crud-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60%;
+    left: -5%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+}
+
+.crud-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.crud-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.crud-header-icon {
+    width: 55px;
+    height: 55px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.crud-header h1 {
+    color: white;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.crud-header p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Botón volver */
+.btn-volver {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-volver:hover {
+    background: rgba(255, 255, 255, 0.35);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   CARD PRINCIPAL
+   ======================================== */
+.crud-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+}
+
+.crud-card-header {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.crud-card-header h3 {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #1a1a2e;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.crud-card-header h3 i {
+    color: #f5576c;
+}
+
+.crud-card-body {
+    padding: 1.5rem 2rem 2rem;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.btn-nuevo {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border: none;
+    color: white;
+    padding: 0.6rem 1.4rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.25);
+}
+
+.btn-nuevo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(17, 153, 142, 0.4);
+    color: white;
+}
+
+.btn-editar {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+.btn-editar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(253, 160, 133, 0.4);
+    color: white;
+}
+
+.btn-eliminar {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+.btn-eliminar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+    color: white;
+}
+
+/* ========================================
+   TABLA
+   ======================================== */
+.table thead.table-dark {
+    background: var(--primary-gradient) !important;
+    border: none;
+}
+
+.table thead.table-dark th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    border: none;
+    color: white !important;
+    white-space: nowrap;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background: #fff5f7 !important;
+    transform: scale(1.002);
+}
+
+.table tbody td {
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+    font-size: 0.88rem;
+    color: #374151;
+    border-color: #f3f4f6;
+}
+
+/* ========================================
+   BADGES DE ESTADO
+   ======================================== */
+.badge-estado {
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.badge-estado::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.badge-activo {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-inactivo {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ========================================
+   ALERTAS
+   ======================================== */
+.alert-mensaje {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+}
+
+.alert-exito {
+    background: #d1fae5;
+    border: 1px solid #6ee7b7;
+    color: #065f46;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* ========================================
+   MODAL
+   ======================================== */
+.modal-content {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 1.3rem 1.8rem;
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+.modal-body {
+    padding: 1.8rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 1.2rem 1.8rem;
+    background: #f9fafb;
+}
+
+.modal-footer .btn-secondary {
+    background: #e5e7eb;
+    border: none;
+    color: #374151;
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 10px;
+}
+
+.modal-footer .btn-secondary:hover {
+    background: #d1d5db;
+}
+
+.modal-footer .btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+    font-weight: 600;
+    padding: 0.5rem 1.4rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.modal-footer .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(102, 126, 234, 0.4);
+}
+
+/* Formulario del modal */
+.form-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #374151;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border: 1.5px solid #e5e7eb;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #f5576c;
+    box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.15);
+    outline: none;
+}
+
+/* ========================================
+   DATATABLES PERSONALIZADO
+   ======================================== */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    padding: 1rem 0;
+    font-size: 0.9rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 8px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #fff5f7 !important;
+    border: none !important;
+    color: #f5576c !important;
+    border-radius: 8px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .crud-header {
+        padding: 1.5rem 0 3.5rem;
+    }
+    
+    .crud-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .crud-card-header,
+    .crud-card-body {
+        padding: 1.2rem;
+    }
+    
+    .modal-body {
+        padding: 1.2rem;
+    }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.crud-card {
+    animation: fadeInUp 0.5s ease forwards;
+}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tienda.entity.Categoria;
 import com.tienda.repository.CategoriaRepository;
@@ -46,6 +47,12 @@ public class CategoriaServiceImpl implements CategoriaService {
 	public void actualizar(Categoria categoria) {
 		repoCategoria.save(categoria);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Categoria> listarActivas() {
+		return repoCategoria.listarActivas();
 	}
 	
 

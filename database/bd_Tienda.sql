@@ -167,53 +167,59 @@ CREATE TABLE tb_usuario(
     REFERENCES tb_rol(id_rol)
 );
 
--- Insertar registros en tb_categoria
 INSERT INTO tb_categoria (nombre, estado) VALUES
-('Electrodomésticos', 1),
-('Tecnología', 1),
-('Ropa', 1),
-('Calzado', 1),
-('Alimentos', 1),
+('Abarrotes', 1),
 ('Bebidas', 1),
-('Juguetes', 0),
-('Muebles', 1),
-('Belleza', 0),
-('Deportes', 1);
+('Lácteos', 1),
+('Snacks', 1),
+('Limpieza', 1),
+('Cuidado Personal', 1),
+('Panadería', 1),
+('Conservas', 1),
+('Mascotas', 1),
+('Útiles del Hogar', 1);
 
--- Insertar registros en tb_categoria
+-- Insertar registros en tb_proveedores
 INSERT INTO tb_proveedor (ruc, razon_social, telefono, correo, contacto, estado) VALUES
-('20123456789', 'Distribuidora Andina S.A.', '987654321', 'ventas@andina.com', 'Carlos Pérez', 1),
-('20234567890', 'Importaciones Globales SAC', '912345678', 'contacto@globales.com', 'María López', 1),
-('20345678901', 'Proveedores del Norte EIRL', '956789012', 'info@norte.com', 'Juan Ramírez', 1),
-('20456789012', 'Servicios Comerciales SRL', '934567890', 'servicios@comerciales.com', 'Ana Torres', 0),
-('20567890123', 'Almacenes del Sur SAC', '945678901', 'almacenes@delsur.com', 'Luis Fernández', 1);
+('20100070970', 'Gloria S.A.', '987654321', 'ventas@gloria.com.pe', 'Carlos Pérez', 1),
+('20100055237', 'Alicorp S.A.A.', '912345678', 'ventas@alicorp.com.pe', 'María López', 1),
+('20100190797', 'Laive S.A.', '956789012', 'contacto@laive.com.pe', 'Juan Ramírez', 1),
+('20512345678', 'Distribuidora Lima SAC', '934567890', 'ventas@distlima.com', 'Ana Torres', 1),
+('20623456789', 'Mayorista Los Andes SAC', '945678901', 'pedidos@losandes.com', 'Luis Fernández', 1);
 
 -- Insertar registros en tb_usuario
 INSERT INTO tb_usuario (username,password,id_rol) VALUES ('admin','$2a$10$0MB6.Q4Gv4F93HnNhOSozeW35U44vjCZaCvE/NmEqFZ/IvbAg1Mym',1);
 INSERT INTO tb_usuario (username,password,id_rol) VALUES ('vendedor1','$2a$10$QjfJP.TExLGvDGsOouxfpOnSVgypCo2LAt0qiDiDq/YnJsjfuENv6',2);
 
-INSERT INTO tb_marca (nombre) VALUES
-('Samsung'),
-('LG'),
-('Sony'),
-('HP'),
-('Lenovo'),
-('Dell'),
-('Asus'),
-('Apple'),
-('Xiaomi'),
-('Philips');
 
+-- Insertar registros en tb_marca
+INSERT INTO tb_marca (nombre) VALUES
+('Gloria'),
+('Alicorp'),
+('Laive'),
+('Inca Kola'),
+('Coca Cola'),
+('Nestlé'),
+('Don Vittorio'),
+('Costeño'),
+('Bolívar'),
+('Sapolio');
+
+-- Insertar registros en tb_producto
 INSERT INTO tb_producto
 (id_categoria,id_marca,codigo,nombre,precio_compra,precio_venta,stock,stock_minimo)
 VALUES
-(2,1,'TEC001','Smart TV 50 Samsung',1200.00,1600.00,15,5),
-(2,3,'TEC002','PlayStation 5 Sony',1800.00,2300.00,8,2),
-(1,2,'ELE001','Refrigeradora LG',1400.00,1900.00,10,3),
-(3,4,'ROP001','Polo Deportivo Nike',35.00,70.00,50,10),
-(4,5,'CAL001','Zapatillas Adidas Run',120.00,180.00,30,5),
-(5,7,'ALI001','Leche Evaporada Gloria',3.20,4.50,200,50),
-(6,8,'BEB001','Coca Cola 1.5L',4.00,6.50,150,30);
+(3,1,'LAC001','Leche Evaporada Gloria 400g',3.20,4.50,200,50),
+(2,4,'BEB001','Inca Kola 1.5L',4.50,6.50,150,30),
+(2,5,'BEB002','Coca Cola 1.5L',4.00,6.00,150,30),
+(1,7,'ABA001','Fideos Don Vittorio Spaghetti 500g',2.20,3.50,180,40),
+(1,8,'ABA002','Arroz Costeño Extra 5kg',18.00,23.00,80,15),
+(4,6,'SNA001','Galletas Sublime Nestlé',1.20,2.00,250,50),
+(5,10,'LIM001','Detergente Sapolio 800g',5.50,8.00,100,20);
+
+
+
+
 
 
 SELECT id_usuario, username, password, id_rol
@@ -245,18 +251,30 @@ SELECT * FROM tb_detalle_venta;
 -- =================================================================
 -- PRODUCTOS SIMPLES (Copia, pega y ejecuta)
 -- =================================================================
-INSERT INTO tb_producto (id_categoria, id_marca, codigo, nombre, precio_compra, precio_venta, stock, stock_minimo) VALUES
-(2, 4, 'TEC-201', 'Laptop HP Simple', 2000.00, 2500.00, 2, 5),       -- Alerta Stock Mínimo
-(2, 5, 'TEC-202', 'Tablet Lenovo Simple', 500.00, 700.00, 1, 4),     -- Alerta Stock Mínimo
-(5, 7, 'ALI-201', 'Yogurt Gloria Grande', 5.00, 8.00, 50, 10),       -- Stock Normal
-(6, 8, 'BEB-201', 'Gaseosa Coca Cola 2L', 4.00, 6.00, 100, 20);      -- Stock Normal
+INSERT INTO tb_producto
+(id_categoria,id_marca,codigo,nombre,precio_compra,precio_venta,stock,stock_minimo)
+VALUES
+(3,3,'LAC201','Yogurt Laive Fresa 1L',5.00,8.00,2,5),      -- Alerta stock
+(1,2,'ABA202','Aceite Primor 1L',7.50,10.50,1,4),         -- Alerta stock
+(4,6,'SNA201','Chocolate Sublime',1.00,1.80,80,20),       -- Stock normal
+(2,4,'BEB201','Inca Kola 500ml',1.80,3.00,120,30);        -- Stock normal
 
 
 -- =================================================================
 -- LOTES SIMPLES (Usa IDs fijos directos: 1, 2, 3...)
 -- =================================================================
 INSERT INTO tb_lote_producto (id_producto, numero_lote, fecha_ingreso, fecha_vencimiento, cantidad) VALUES
-(6, 'LOTE-A', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 5 DAY), 50),   -- ¡YA VENCIDO! (Hace 5 días)
-(6, 'LOTE-B', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 10 DAY), 40),  -- ¡PRÓXIMO A VENCER! (En 10 días)
-(7, 'LOTE-C', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 2 DAY), 30),   -- ¡YA VENCIDO! (Hace 2 días)
-(7, 'LOTE-D', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY), 60);  -- ¡PRÓXIMO A VENCER! (En 15 días)	
+(1, 'LOTE-A', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 5 DAY), 50),
+(1, 'LOTE-B', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 10 DAY), 40),
+(2, 'LOTE-C', CURDATE(), DATE_SUB(CURDATE(), INTERVAL 2 DAY), 30),
+(2, 'LOTE-D', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY), 60);
+
+-- Productos con stock bajo en Perú
+INSERT INTO tb_producto (id_categoria, id_marca, codigo, nombre, precio_compra, precio_venta, stock, stock_minimo)
+VALUES
+(1, 1, 'ABR001', 'Arroz Costeño 5kg', 18.50, 22.00, 3, 10),
+(2, 2, 'BEB003', 'Inca Kola 1.5L', 4.20, 6.00, 5, 15),
+(3, 3, 'LAC003', 'Leche Gloria Entera 1L', 3.00, 4.50, 2, 12),
+(4, 4, 'SNK004', 'Chifles Laive 150g', 2.50, 3.80, 4, 10),
+(5, 5, 'LIM005', 'Detergente Bolívar 1kg', 6.50, 8.50, 6, 20);
+
