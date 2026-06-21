@@ -1,0 +1,310 @@
+/* ========================================
+   VARIABLES
+======================================== */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    --border-radius: 16px;
+}
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+.crud-header {
+    background: var(--primary-gradient);
+    padding: 2rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.crud-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,.08);
+    border-radius: 50%;
+}
+
+.crud-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.crud-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.crud-header-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.6rem;
+}
+
+.crud-header h1 {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.crud-header p {
+    margin: 0;
+    color: rgba(255,255,255,.85);
+}
+
+.btn-volver {
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.3);
+    color: white;
+    text-decoration: none;
+    padding: .6rem 1.2rem;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    transition: .3s;
+}
+
+.btn-volver:hover {
+    background: rgba(255,255,255,.35);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   CARD PRINCIPAL
+======================================== */
+.card, .crud-card {
+    background: white;
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.crud-card-header,
+.card-header {
+    background: white !important;
+    color: #1a1a2e !important;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1.5rem 2rem;
+}
+
+.crud-card-header h3,
+.card-header h3 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.crud-card-body,
+.card-body {
+    padding: 1.5rem 2rem;
+}
+
+/* ========================================
+   BOTONES
+======================================== */
+.btn-success {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--primary-gradient);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    border: none;
+}
+
+.btn-warning {
+    border: none;
+    color: white;
+}
+
+/* ========================================
+   TABLA
+======================================== */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead.table-dark {
+    background: var(--primary-gradient) !important;
+}
+
+.table thead.table-dark th {
+    border: none;
+    color: white !important;
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+.table tbody tr:hover {
+    background: #f8f9ff;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* ========================================
+   ALERTAS
+======================================== */
+.alert-info {
+    border: none;
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.alert-success {
+    border: none;
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+.form-label,
+label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: .4rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border: 1.5px solid #e5e7eb;
+    padding: .7rem 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102,126,234,.15);
+}
+
+/* ========================================
+   DATATABLE
+======================================== */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    padding: 1rem 0;
+}
+
+.dataTables_wrapper .paginate_button.current {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width:768px){
+
+    .crud-header {
+        padding: 1.5rem 0 3.5rem;
+    }
+
+    .crud-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .card-body,
+    .crud-card-body {
+        padding: 1.2rem;
+    }
+}
+
+/* ========================================
+   ALERTAS PERSONALIZADAS (PRODUCTOS)
+======================================== */
+
+.alert-mensaje {
+    background: #eef2ff;
+    border-left: 5px solid #667eea;
+    color: #4338ca;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-weight: 500;
+}
+
+.alert-mensaje i {
+    color: #667eea;
+    font-size: 18px;
+}
+
+.alert-exito {
+    background: #d1fae5;
+    border-left: 5px solid #10b981;
+    color: #065f46;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-weight: 500;
+}
+
+.alert-exito i {
+    color: #10b981;
+    font-size: 18px;
+}
