@@ -35,7 +35,7 @@ public class SecurityConfig {
 				.hasRole("ADMIN")
 				
 				.requestMatchers("/gestionproveedor/**")
-				.hasAnyRole("ADMIN","VENDEDOR")
+				.hasAnyRole("ADMIN")
 				
 				.requestMatchers("/gestioncategoria/**")
 				.hasRole("ADMIN")
@@ -62,6 +62,13 @@ public class SecurityConfig {
 
 		        .permitAll()
 		)
+		 // 🔴 AGREGA ESTO: Manejador de acceso denegado
+        .exceptionHandling(ex -> ex
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // Redirige al home con un parámetro de error
+                    response.sendRedirect("/home?accessDenied=true");
+                })
+        )
 		
 		.logout(logout -> logout
 				.logoutSuccessUrl("/login"));
