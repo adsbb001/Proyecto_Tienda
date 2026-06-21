@@ -51,4 +51,9 @@ implements VentaService {
 	public List<DetalleVenta> listarDetalles() {
 		return repoDetalleVenta.findAll();
 	}
+
+	@Override
+	public Integer obtenerSiguienteCodigo() {
+	    return repoVenta.obtenerSiguienteCodigo();
+	}
 }

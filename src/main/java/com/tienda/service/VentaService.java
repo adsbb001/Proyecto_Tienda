@@ -18,4 +18,6 @@ public interface VentaService {
 	void guardarDetalle(DetalleVenta detalle);
 
 	List<DetalleVenta> listarDetalles();
+	
+	Integer obtenerSiguienteCodigo();
 }
