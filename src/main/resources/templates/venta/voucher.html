@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Voucher de Venta #<span th:text="${venta.idVenta}"></span></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/voucher.css}">
+</head>
+<body>
+
+    <div class="ticket-container">
+        <!-- Encabezado del Ticket -->
+        <div class="ticket-header">
+            <h2 class="store-name">MI TIENDA S.A.C.</h2>
+            <p class="store-ruc">RUC: 20100070970</p>
+            <p class="store-address">Av. Principal 123, Lima - Perú</p>
+            <p class="store-phone">Tel: (01) 555-1234</p>
+            <hr class="dashed-line">
+            <h4 class="ticket-title">BOLETA DE VENTA ELECTRÓNICA</h4>
+			<p class="ticket-number">N° <span th:text="${'B001-' + #numbers.formatInteger(venta.idVenta, 6)}">B001-000001</span></p>
+        </div>
+
+		<!-- Datos del Cliente -->
+		<div class="ticket-info">
+		    <div class="info-row">
+		        <span class="label">Fecha:</span>
+		        <span class="value" th:text="${#temporals.format(venta.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
+		    </div>
+		    <div class="info-row">
+		        <span class="label">Cliente:</span>
+		        <span class="value" th:text="${venta.cliente != null ? venta.cliente.nombre : 'CLIENTE VARIOS'}">Juan Pérez</span>
+		    </div>
+		    <div class="info-row">
+		        <span class="label">Pago:</span>
+		        <span class="value" th:text="${venta.metodoPago.nombre}">Efectivo</span>
+		    </div>
+		    <!-- ✅ NUEVA FILA AQUÍ -->
+		    <div class="info-row">
+		        <span class="label">Atendido por:</span>
+		        <span class="value" th:text="${vendedor}">vendedor1</span>
+		    </div>
+		</div>
+
+        <hr class="dashed-line">
+
+        <!-- Tabla de Productos -->
+        <div class="ticket-items">
+            <table class="table table-sm table-borderless">
+                <thead>
+                    <tr>
+                        <th class="text-start">DESCRIPCIÓN</th>
+                        <th class="text-center">CANT</th>
+                        <th class="text-end">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="d : ${venta.detalles}">
+                        <td>
+                            <div class="item-name" th:text="${d.producto.nombre}">Producto</div>
+                            <div class="item-price" th:text="'S/ ' + ${#numbers.formatDecimal(d.precioVenta, 1, 'POINT', 2, 'COMMA')}">0.00</div>
+                        </td>
+                        <td class="text-center" th:text="${d.cantidad}">1</td>
+                        <td class="text-end" th:text="'S/ ' + ${#numbers.formatDecimal(d.subtotal, 1, 'POINT', 2, 'COMMA')}">0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr class="dashed-line">
+
+        <!-- Totales -->
+        <div class="ticket-totals">
+            <div class="total-row">
+                <span class="label">SUBTOTAL:</span>
+                <span class="value" th:text="'S/ ' + ${#numbers.formatDecimal(venta.total / 1.18, 1, 'POINT', 2, 'COMMA')}">0.00</span>
+            </div>
+            <div class="total-row">
+                <span class="label">IGV (18%):</span>
+                <span class="value" th:text="'S/ ' + ${#numbers.formatDecimal(venta.total - (venta.total / 1.18), 1, 'POINT', 2, 'COMMA')}">0.00</span>
+            </div>
+            <div class="total-row grand-total">
+                <span class="label">TOTAL:</span>
+                <span class="value" th:text="'S/ ' + ${#numbers.formatDecimal(venta.total, 1, 'POINT', 2, 'COMMA')}">0.00</span>
+            </div>
+        </div>
+
+        <hr class="dashed-line">
+
+        <!-- Pie del Ticket -->
+        <div class="ticket-footer">
+            <p class="thank-you">¡GRACIAS POR SU COMPRA!</p>
+            <p class="small-text">Este documento es un comprobante de pago válido.</p>
+            <p class="small-text">Conserve este voucher para cualquier reclamo.</p>
+            <div class="qr-placeholder">
+                <i class="bi bi-qr-code"></i>
+                <span>Representación impresa de la Boleta Electrónica</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Acción (No se imprimen) -->
+    <div class="action-buttons no-print">
+        <button onclick="window.print()" class="btn btn-print">
+            <i class="bi bi-printer-fill"></i> Imprimir Voucher
+        </button>
+        <a th:href="@{/gestionventa/lista}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al Listado
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

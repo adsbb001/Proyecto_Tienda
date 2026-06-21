@@ -10,70 +10,54 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-	
-	
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	
-	
-	@Bean
-	SecurityFilterChain	 filterChain(HttpSecurity http) throws Exception{
-		
-		http.authorizeHttpRequests(auth -> auth
-				// Permitir acceso público a recursos estáticos
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.authorizeHttpRequests(auth -> auth
+                // Recursos estáticos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
-				.requestMatchers("/login")
-				.permitAll()
-				
-				.requestMatchers("/","/index")
-				.authenticated()
-				
-				.requestMatchers("/gestioncliente/**")
-				.hasRole("ADMIN")
-				
-				.requestMatchers("/gestionproveedor/**")
-				.hasAnyRole("ADMIN")
-				
-				.requestMatchers("/gestioncategoria/**")
-				.hasRole("ADMIN")
-				
-				.requestMatchers("/gestionproducto/**")
-				.hasRole("ADMIN")
-				
-				.requestMatchers("/gestionconsulta/**")
-				.hasAnyRole("ADMIN", "VENDEDOR")
-				
-				.anyRequest()
-				.authenticated()
-				)
-		.formLogin(form -> form
-		        .loginPage("/login")
+                .requestMatchers("/login").permitAll()
 
-		        .defaultSuccessUrl("/home",
-		                true)
+                // Home (requiere estar autenticado)
+                .requestMatchers("/", "/index").authenticated()
 
-		        .failureHandler((request, response, exception) -> {
-		            exception.printStackTrace();
-		            response.sendRedirect("/login?error");
-		        })
+                // Módulos solo para ADMIN
+                .requestMatchers("/gestioncliente/**").hasRole("ADMIN")
+                .requestMatchers("/gestionproveedor/**").hasRole("ADMIN")
+                .requestMatchers("/gestioncategoria/**").hasRole("ADMIN")
+                .requestMatchers("/gestionproducto/**").hasRole("ADMIN")
 
-		        .permitAll()
-		)
-		 // 🔴 AGREGA ESTO: Manejador de acceso denegado
+                // ✅ NUEVO: Ventas - ADMIN y VENDEDOR
+                .requestMatchers("/gestionventa/**").hasAnyRole("ADMIN", "VENDEDOR")
+
+                // Consultas - ADMIN y VENDEDOR
+                .requestMatchers("/gestionconsulta/**").hasAnyRole("ADMIN", "VENDEDOR")
+
+                // Todo lo demás requiere autenticación
+                .anyRequest().authenticated()
+        )
+        .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true)
+                .failureHandler((request, response, exception) -> {
+                    exception.printStackTrace();
+                    response.sendRedirect("/login?error");
+                })
+                .permitAll()
+        )
         .exceptionHandling(ex -> ex
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    // Redirige al home con un parámetro de error
                     response.sendRedirect("/home?accessDenied=true");
                 })
         )
-		
-		.logout(logout -> logout
-				.logoutSuccessUrl("/login"));
-		
-		return http.build();
-	}
-	
+        .logout(logout -> logout
+                .logoutSuccessUrl("/login"));
+
+        return http.build();
+    }
 }

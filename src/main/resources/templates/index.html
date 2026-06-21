@@ -134,24 +134,24 @@
 	                </a>
 	            </div>
 	
-	            <!-- Ventas -->
-	            <div class="col-lg-4 col-md-6 animate-in delay-4">
-	                <a href="/gestionventa/lista" class="module-card card-ventas">
-	                    <div class="card-image">
-	                        <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/1ee368b1b-6f20-4302-924d-17b90034032f.png" alt="Ventas">
-	                    </div>
-	                    <div class="card-body">
-	                        <div class="card-icon">
-	                            <i class="bi bi-graph-up-arrow"></i>
-	                        </div>
-	                        <h5 class="card-title">Ventas</h5>
-	                        <p class="card-text">Registra y consulta todas las transacciones y reportes de ventas.</p>
-	                        <span class="card-link">
-	                            Acceder <i class="bi bi-arrow-right"></i>
-	                        </span>
-	                    </div>
-	                </a>
-	            </div>
+				<!-- Ventas -->
+				<div class="col-lg-4 col-md-6 animate-in delay-4" sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
+				    <a th:href="@{/gestionventa/lista}" class="module-card card-ventas">
+				        <div class="card-image">
+				            <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/1ee368b1b-6f20-4302-924d-17b90034032f.png" alt="Ventas">
+				        </div>
+				        <div class="card-body">
+				            <div class="card-icon">
+				                <i class="bi bi-graph-up-arrow"></i>
+				            </div>
+				            <h5 class="card-title">Ventas</h5>
+				            <p class="card-text">Registra y consulta todas las transacciones y reportes de ventas.</p>
+				            <span class="card-link">
+				                Acceder <i class="bi bi-arrow-right"></i>
+				            </span>
+				        </div>
+				    </a>
+				</div>
 				
 				<!-- Consultas -->
 				<div class="col-lg-4 col-md-6 animate-in delay-5" sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">

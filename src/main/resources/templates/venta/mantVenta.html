@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Ventas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/index.css">
+    <link rel="stylesheet" th:href="@{/css/ventas.css}">
+</head>
+<body>
+
+    <!-- ========================================
+         HEADER
+         ======================================== -->
+    <header class="ventas-header">
+        <div class="container">
+            <div class="ventas-header-content">
+                <div class="ventas-header-left">
+                    <div class="ventas-header-icon">
+                        <i class="bi bi-cart-check-fill"></i>
+                    </div>
+                    <div>
+                        <h1>Historial de Ventas</h1>
+                        <p>Gestiona y consulta todas las transacciones realizadas</p>
+                    </div>
+                </div>
+                <a th:href="@{/home}" class="btn-volver">
+                    <i class="bi bi-arrow-left"></i> Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================
+         CONTENIDO PRINCIPAL
+         ======================================== -->
+    <main class="container">
+
+        <!-- Mensaje de éxito -->
+        <div th:if="${mensaje}" class="alert-exito">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="${mensaje}">Mensaje</span>
+        </div>
+
+		<!-- Estadísticas -->
+		<div class="stats-grid">
+		    <div class="stat-card">
+		        <div class="stat-icon ventas">
+		            <i class="bi bi-receipt"></i>
+		        </div>
+		        <div class="stat-info">
+		            <div class="stat-label">Total Ventas</div>
+		            <div class="stat-value" th:text="${totalVentas}">0</div>
+		        </div>
+		    </div>
+
+		    <div class="stat-card">
+		        <div class="stat-icon monto">
+		            <i class="bi bi-cash-stack"></i>
+		        </div>
+		        <div class="stat-info">
+		            <div class="stat-label">Monto Total</div>
+		            <div class="stat-value small">
+		                S/ <span th:text="${#numbers.formatDecimal(montoTotal, 1, 'POINT', 2, 'COMMA')}">0.00</span>
+		            </div>
+		        </div>
+		    </div>
+
+		    <div class="stat-card">
+		        <div class="stat-icon productos">
+		            <i class="bi bi-box-seam"></i>
+		        </div>
+		        <div class="stat-info">
+		            <div class="stat-label">Productos Vendidos</div>
+		            <div class="stat-value" th:text="${totalProductosVendidos}">0</div>
+		        </div>
+		    </div>
+
+		    <div class="stat-card">
+		        <div class="stat-icon anonimas">
+		            <i class="bi bi-person-x"></i>
+		        </div>
+		        <div class="stat-info">
+		            <div class="stat-label">Ventas Anónimas</div>
+		            <div class="stat-value" th:text="${ventasAnonimas}">0</div>
+		        </div>
+		    </div>
+		</div>
+
+		
+		
+        <!-- Card de la tabla -->
+        <div class="ventas-card">
+            <div class="ventas-card-header">
+                <h3>
+                    <i class="bi bi-list-ul"></i> Listado de Ventas
+                </h3>
+                <a th:href="@{/gestionventa/nuevo}" class="btn-nueva-venta">
+                    <i class="bi bi-plus-circle-fill"></i> Nueva Venta
+                </a>
+            </div>
+			
+			
+
+            <div class="ventas-card-body">
+
+                <!-- Estado vacío -->
+                <div th:if="${#lists.isEmpty(ventas)}" class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <h4>No hay ventas registradas</h4>
+                    <p>Comienza registrando tu primera venta</p>
+                    <a th:href="@{/gestionventa/nuevo}" class="btn-nueva-venta">
+                        <i class="bi bi-plus-circle-fill"></i> Registrar Nueva Venta
+                    </a>
+                </div>
+
+                <!-- Tabla de ventas -->
+                <div th:unless="${#lists.isEmpty(ventas)}" class="table-responsive">
+                    <table class="tabla-ventas">
+						<thead class="table-dark">
+						    <tr>
+						        <th class="text-center">N° Venta</th>
+						        <th>Fecha</th>
+						        <th>Cliente</th>
+						        <th>Método de Pago</th>
+						        <th class="text-center">Productos</th>
+						        <th class="text-end">Total</th>
+						        <th class="text-center" sec:authorize="hasRole('ADMIN')">Estado</th>
+						        <th class="text-center" sec:authorize="hasRole('ADMIN')">Acción</th>
+						    </tr>
+						</thead>
+                        <tbody>
+							<tr th:each="v : ${ventas}" th:classappend="${v.estado == 'ANULADA'} ? 'fila-anulada'">
+							    <td class="text-center">
+							        <span class="badge-id" th:text="${v.idVenta}">1</span>
+							    </td>
+							    <td th:text="${#temporals.format(v.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026</td>
+							    <td>
+							        <span th:if="${v.cliente != null}" th:text="${v.cliente.nombre}">Cliente</span>
+							        <span th:if="${v.cliente == null}" class="badge-cliente-anonimo">
+							            <i class="bi bi-person-x-fill"></i> Venta anónima
+							        </span>
+							    </td>
+							    <td>
+							        <span class="badge-metodo"
+							              th:classappend="${v.metodoPago.nombre == 'Efectivo'} ? 'efectivo' :
+							                              (${v.metodoPago.nombre == 'Yape'} ? 'yape' :
+							                              (${v.metodoPago.nombre == 'Plin'} ? 'plin' :
+							                              (${v.metodoPago.nombre.contains('Tarjeta')} ? 'tarjeta' :
+							                              (${v.metodoPago.nombre.contains('Transferencia')} ? 'transferencia' : 'default'))))"
+							              th:text="${v.metodoPago.nombre}">
+							            Efectivo
+							        </span>
+							    </td>
+							    <td>
+							        <div class="productos-lista">
+							            <span th:each="d, stat : ${v.detalles}">
+							                <span class="badge-producto-item"
+							                      th:text="${d.producto.nombre + ' (x' + d.cantidad + ')'}">
+							                    Producto
+							                </span>
+							                <span th:if="${!stat.last}"> </span>
+							            </span>
+							        </div>
+							    </td>
+							    <td class="text-end">
+							        <span class="monto-total" th:classappend="${v.estado == 'ANULADA'} ? 'monto-anulado'">
+							            S/ <span th:text="${#numbers.formatDecimal(v.total, 1, 'POINT', 2, 'COMMA')}">0.00</span>
+							        </span>
+							    </td>
+							    <td class="text-center" sec:authorize="hasRole('ADMIN')">
+							        <span th:if="${v.estado == 'ACTIVA'}" class="badge-estado activo">
+							            <i class="bi bi-check-circle-fill"></i> Activa
+							        </span>
+							        <span th:if="${v.estado == 'ANULADA'}" class="badge-estado inactivo">
+							            <i class="bi bi-x-circle-fill"></i> Anulada
+							        </span>
+							    </td>
+							    <td class="text-center" sec:authorize="hasRole('ADMIN')">
+							        <a th:if="${v.estado == 'ACTIVA'}"
+							           th:href="@{'/gestionventa/anular/' + ${v.idVenta}}"
+							           class="btn-anular"
+							           onclick="return confirm('¿Anular esta venta? El stock se reintegrará automáticamente.')">
+							            <i class="bi bi-x-circle-fill"></i> Anular
+							        </a>
+							        <span th:if="${v.estado == 'ANULADA'}" class="texto-bloqueado">
+							            <i class="bi bi-lock-fill"></i> Bloqueada
+							        </span>
+							    </td>
+							</tr>
+                        </tbody>
+						<tfoot>
+						    <tr>
+						        <th colspan="6" class="text-end">TOTAL GENERAL:</th>
+						        <th class="text-end">
+						            <span class="monto-general">
+						                S/ <span th:text="${#numbers.formatDecimal(totalGeneral, 1, 'POINT', 2, 'COMMA')}">0.00</span>
+						            </span>
+						        </th>
+						        <th></th>
+						    </tr>
+						</tfoot>
+                    </table>
+                </div>
+				
+				<!-- ========================================
+				     PAGINACIÓN
+				     ======================================== -->
+				<div th:if="${totalPages > 1}" class="paginacion-container">
+				    <nav aria-label="Navegación de páginas">
+				        <ul class="pagination justify-content-center mb-0">
+				            <!-- Primera página -->
+				            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+				                <a class="page-link" th:href="@{/gestionventa/lista(page=0, size=5)}">
+				                    <i class="bi bi-chevron-double-left"></i>
+				                </a>
+				            </li>
+
+				            <!-- Página anterior -->
+				            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+				                <a class="page-link" th:href="@{/gestionventa/lista(page=${currentPage - 1}, size=5)}">
+				                    <i class="bi bi-chevron-left"></i> Anterior
+				                </a>
+				            </li>
+
+				            <!-- Números de página -->
+				            <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+				                <li class="page-item" th:classappend="${i == currentPage} ? 'active'">
+				                    <a class="page-link" th:href="@{/gestionventa/lista(page=${i}, size=5)}" th:text="${i + 1}">1</a>
+				                </li>
+				            </th:block>
+
+				            <!-- Página siguiente -->
+				            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+				                <a class="page-link" th:href="@{/gestionventa/lista(page=${currentPage + 1}, size=5)}">
+				                    Siguiente <i class="bi bi-chevron-right"></i>
+				                </a>
+				            </li>
+
+				            <!-- Última página -->
+				            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+				                <a class="page-link" th:href="@{/gestionventa/lista(page=${totalPages - 1}, size=5)}">
+				                    <i class="bi bi-chevron-double-right"></i>
+				                </a>
+				            </li>
+				        </ul>
+				    </nav>
+				    <div class="paginacion-info">
+				        Página <span th:text="${currentPage + 1}">1</span> de 
+				        <span th:text="${totalPages}">1</span> · 
+				        Total: <span th:text="${totalItems}">0</span> ventas
+				    </div>
+				</div>
+				
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ========================================
+         SCRIPTS
+         ======================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+
+</body>
+</html>
