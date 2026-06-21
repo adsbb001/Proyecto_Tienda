@@ -278,3 +278,43 @@ VALUES
 (4, 4, 'SNK004', 'Chifles Laive 150g', 2.50, 3.80, 4, 10),
 (5, 5, 'LIM005', 'Detergente Bolívar 1kg', 6.50, 8.50, 6, 20);
 
+-- =================================================================
+-- MÉTODOS DE PAGO (Perú)
+-- =================================================================
+INSERT INTO tb_metodo_pago (nombre) VALUES
+('Efectivo'),
+('Yape'),
+('Plin'),
+('Tarjeta de Crédito'),
+('Tarjeta de Débito'),
+('Transferencia BCP'),
+('Transferencia Interbank'),
+('Transferencia BBVA'),
+('Transferencia Scotiabank'),
+('Crédito (fiado)');
+
+-- =================================================================
+-- CLIENTES DE EJEMPLO (Perú)
+-- =================================================================
+INSERT INTO tb_cliente (nombre) VALUES
+('Juan Pérez García'),
+('María López Torres'),
+('Carlos Ramírez Vargas'),
+('Ana Torres Mendoza'),
+('Luis Fernández Díaz'),
+('Rosa Quispe Huamán'),
+('Pedro Salazar Rojas'),
+('Carmen Castillo Vega'),
+('Jorge Mamani Condori'),
+('Lucía Paredes Silva'),
+('Cliente Anónimo');
+
+-- Agregar campo estado a tb_venta
+ALTER TABLE tb_venta 
+ADD COLUMN estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVA' AFTER total;
+
+-- Actualizar ventas existentes (con WHERE usando la PK)
+UPDATE tb_venta 
+SET estado = 'ACTIVA' 
+WHERE id_venta > 0;
+
