@@ -30,10 +30,19 @@
 		        <p>Panel de administración — Gestión integral de tu negocio</p>
 		    </div>
 		</header>
+		
+	
 	
 	    <!-- Main Content -->
 	    <main class="container cards-section">
 	
+			<!-- 🔴 MENSAJE DE ACCESO DENEGADO -->
+			<div th:if="${errorMessage}" id="errorMessage" class="alert alert-danger alert-dismissible fade show animate-in delay-1" role="alert">
+			    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+			    <span th:text="${errorMessage}">Mensaje de error</span>
+			    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			
 	        <!-- Stats Bar -->
 	        <div class="stats-bar animate-in delay-1">
 	            <div class="stat-item">
@@ -69,7 +78,7 @@
 	        <div class="row g-4">
 	
 	            <!-- Categorías -->
-	            <div class="col-lg-4 col-md-6 animate-in delay-1">
+	            <div class="col-lg-4 col-md-6 animate-in delay-1" sec:authorize="hasRole('ADMIN')">
 	                <a th:href="@{/gestioncategoria/lista}" class="module-card card-categorias">
 	                    <div class="card-image">
 	                        <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/13c759cce-bb0f-447a-89d7-d397a2a2623a.png" alt="Categorías">
@@ -88,7 +97,7 @@
 	            </div>
 	
 	            <!-- Productos -->
-	            <div class="col-lg-4 col-md-6 animate-in delay-2">
+	            <div class="col-lg-4 col-md-6 animate-in delay-2" sec:authorize="hasRole('ADMIN')">
 	                <a th:href="@{/gestionproducto/lista}" class="module-card card-productos">
 	                    <div class="card-image">
 	                        <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/115861249-064d-43b8-83ab-cf2dc04c598a.png" alt="Productos">
@@ -107,7 +116,7 @@
 	            </div>
 	
 	            <!-- Proveedores -->
-	            <div class="col-lg-4 col-md-6 animate-in delay-3">
+	            <div class="col-lg-4 col-md-6 animate-in delay-3" sec:authorize="hasRole('ADMIN')">
 	                <a th:href="@{/gestionproveedor/lista}" class="module-card card-proveedores">
 	                    <div class="card-image">
 	                        <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/144cb3174-0de1-46f7-95a9-3b763bd3e7e1.png" alt="Proveedores">
@@ -125,27 +134,27 @@
 	                </a>
 	            </div>
 	
-	            <!-- Ventas -->
-	            <div class="col-lg-4 col-md-6 animate-in delay-4">
-	                <a href="/gestionventa/lista" class="module-card card-ventas">
-	                    <div class="card-image">
-	                        <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/1ee368b1b-6f20-4302-924d-17b90034032f.png" alt="Ventas">
-	                    </div>
-	                    <div class="card-body">
-	                        <div class="card-icon">
-	                            <i class="bi bi-graph-up-arrow"></i>
-	                        </div>
-	                        <h5 class="card-title">Ventas</h5>
-	                        <p class="card-text">Registra y consulta todas las transacciones y reportes de ventas.</p>
-	                        <span class="card-link">
-	                            Acceder <i class="bi bi-arrow-right"></i>
-	                        </span>
-	                    </div>
-	                </a>
-	            </div>
+				<!-- Ventas -->
+				<div class="col-lg-4 col-md-6 animate-in delay-4" sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
+				    <a th:href="@{/gestionventa/lista}" class="module-card card-ventas">
+				        <div class="card-image">
+				            <img src="https://image.qwenlm.ai/public_source/24746ef7-c387-437e-b658-8f34a4eed73e/1ee368b1b-6f20-4302-924d-17b90034032f.png" alt="Ventas">
+				        </div>
+				        <div class="card-body">
+				            <div class="card-icon">
+				                <i class="bi bi-graph-up-arrow"></i>
+				            </div>
+				            <h5 class="card-title">Ventas</h5>
+				            <p class="card-text">Registra y consulta todas las transacciones y reportes de ventas.</p>
+				            <span class="card-link">
+				                Acceder <i class="bi bi-arrow-right"></i>
+				            </span>
+				        </div>
+				    </a>
+				</div>
 				
 				<!-- Consultas -->
-				<div class="col-lg-4 col-md-6 animate-in delay-5">
+				<div class="col-lg-4 col-md-6 animate-in delay-5" sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
 				    <a th:href="@{/gestionconsultas/consultas}" class="module-card card-consultas">
 				        <div class="card-image">
 				           <img src="https://image.qwenlm.ai/public_source/eedf9189-d6d4-4088-adb4-2b39864c9570/10281be92-34cd-4a56-9c24-fd9ddf1c5e2d6826.png" alt="Consultas">
@@ -202,6 +211,23 @@
 	        updateDateTime();
 	        setInterval(updateDateTime, 1000 * 30);
 	    </script>
+		
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+		
+		<script>
+		    // Ocultar mensaje de error después de 4 segundos
+		    setTimeout(function() {
+		        const errorAlert = document.getElementById('errorMessage');
+		        if (errorAlert) {
+		            errorAlert.style.transition = 'opacity 0.5s ease';
+		            errorAlert.style.opacity = '0';
+		            setTimeout(function() {
+		                errorAlert.remove();
+		            }, 500);
+		        }
+		    }, 4000);
+		</script>
+		
 	</body>
 	</html>
 	

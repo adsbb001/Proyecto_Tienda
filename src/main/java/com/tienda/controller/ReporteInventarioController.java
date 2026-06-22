@@ -28,10 +28,8 @@ public class ReporteInventarioController {
             @RequestParam(value = "idCategoria", required = false) Integer idCategoria,
             Model model) {
 
-        // 1. Obtener productos (filtrados o todos)
         List<Producto> productos = productoService.listarStockBajoPorCategoria(idCategoria);
 
-        // 2. Pasar datos a la vista
         model.addAttribute("productos", productos);
         model.addAttribute("categorias", categoriaService.listarActivas());
         model.addAttribute("idCategoriaSeleccionada", idCategoria);
